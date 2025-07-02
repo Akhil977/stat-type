@@ -11,3 +11,16 @@ Created by **Akhil Philip**.
 ```bash
 npm install stat-type
 
+
+## ✨ Usage
+
+### Async (default)
+
+```js
+const statType = require('stat-type');
+
+(async () => {
+  const type = await statType('README.md');
+  console.log(type); // 'file'
+})();
+

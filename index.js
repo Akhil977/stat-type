@@ -1,41 +1,36 @@
-// index.js
 const fs = require('fs');
-const fsPromises = fs.promises;
+const fsp = require('fs/promises');
 
-/**
- * Async version using callback
- */
-function checkPathType(path, cb) {
-  fs.stat(path, (err, stats) => {
-    if (err) return cb(err);
-    if (stats.isDirectory()) return cb(null, 'directory');
-    if (stats.isFile()) return cb(null, 'file');
-    return cb(null, 'other');
-  });
+async function statType(path) {
+  try {
+    const stats = await fsp.lstat(path);
+    return getType(stats);
+  } catch (err) {
+    if (err.code === 'ENOENT') return 'not found';
+    throw err;
+  }
 }
 
-/**
- * Sync version
- */
-function checkPathTypeSync(path) {
-  const stats = fs.statSync(path);
-  if (stats.isDirectory()) return 'directory';
+function statTypeSync(path) {
+  try {
+    const stats = fs.lstatSync(path);
+    return getType(stats);
+  } catch (err) {
+    if (err.code === 'ENOENT') return 'not found';
+    throw err;
+  }
+}
+
+function getType(stats) {
   if (stats.isFile()) return 'file';
-  return 'other';
-}
-
-/**
- * Promise-based async version
- */
-async function checkPathTypeAsync(path) {
-  const stats = await fsPromises.stat(path);
   if (stats.isDirectory()) return 'directory';
-  if (stats.isFile()) return 'file';
-  return 'other';
+  if (stats.isSymbolicLink()) return 'symlink';
+  if (stats.isSocket()) return 'socket';
+  if (stats.isFIFO()) return 'FIFO';
+  if (stats.isBlockDevice()) return 'blockDevice';
+  if (stats.isCharacterDevice()) return 'characterDevice';
+  return 'unknown';
 }
 
-module.exports = {
-  checkPathType,
-  checkPathTypeSync,
-  checkPathTypeAsync,
-};
+module.exports = statType;
+module.exports.sync = statTypeSync;

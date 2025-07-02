@@ -1,0 +1,15 @@
+Async:
+
+const statType = require('stat-type');
+
+statType('README.md').then(type => {
+  console.log(type); // 'file'
+});
+
+Sync:
+
+const { sync: statTypeSync } = require('stat-type');
+
+const type = statTypeSync('README.md');
+console.log(type); // 'file'
+
