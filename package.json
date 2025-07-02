@@ -1,6 +1,6 @@
 {
   "name": "stat-type",
-  "version": "1.1.0"
+  "version": "1.2.0"
 ,
   "description": "Check if a path is a file, directory or other. Lightweight Node.js fs utility.",
   "main": "index.js",

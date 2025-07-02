@@ -1,36 +1,30 @@
 const fs = require('fs');
-const fsp = require('fs/promises');
+const path = require('path');
 
-async function statType(path) {
-  try {
-    const stats = await fsp.lstat(path);
-    return getType(stats);
-  } catch (err) {
-    if (err.code === 'ENOENT') return 'not found';
-    throw err;
-  }
+// Async version
+function statType(filePath) {
+  return new Promise((resolve, reject) => {
+    fs.stat(path.resolve(filePath), (err, stats) => {
+      if (err) return reject(err);
+
+      if (stats.isFile()) return resolve('file');
+      if (stats.isDirectory()) return resolve('directory');
+      return resolve('other');
+    });
+  });
 }
 
-function statTypeSync(path) {
-  try {
-    const stats = fs.lstatSync(path);
-    return getType(stats);
-  } catch (err) {
-    if (err.code === 'ENOENT') return 'not found';
-    throw err;
-  }
-}
+// Sync version
+function statTypeSync(filePath) {
+  const stats = fs.statSync(path.resolve(filePath));
 
-function getType(stats) {
   if (stats.isFile()) return 'file';
   if (stats.isDirectory()) return 'directory';
-  if (stats.isSymbolicLink()) return 'symlink';
-  if (stats.isSocket()) return 'socket';
-  if (stats.isFIFO()) return 'FIFO';
-  if (stats.isBlockDevice()) return 'blockDevice';
-  if (stats.isCharacterDevice()) return 'characterDevice';
-  return 'unknown';
+  return 'other';
 }
 
-module.exports = statType;
-module.exports.sync = statTypeSync;
+// 👇 Make sure to export both correctly
+module.exports = {
+  statType,
+  statTypeSync
+};
