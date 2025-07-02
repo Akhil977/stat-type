@@ -1,0 +1,17 @@
+{
+  "name": "stat-type",
+  "version": "1.0.0",
+  "description": "Check if a path is a file, directory or other. Lightweight Node.js fs utility.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": ["fs", "file", "directory", "nodejs", "stat", "path", "utility"],
+  "author": "Akhil Philip",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Akhil977/stat-type"
+  }
+}

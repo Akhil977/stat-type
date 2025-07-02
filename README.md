@@ -1,2 +1,13 @@
 # stat-type
-A lightweight Node.js utility to check if a path is a file, directory, or other.
+
+> 🔍 A tiny Node.js utility to determine whether a given path is a **file**, **directory**, or **other**.
+
+Created by **Akhil Philip**.
+
+---
+
+## ✅ Install
+
+```bash
+npm install stat-type
+
